@@ -15,6 +15,8 @@ public class Execute {
 			// file chooser dialog box
 			// set filename in holder and title
 			// updates list and clears details
+		}else if(value.equals("About")){
+			
 		}
 	}
 }

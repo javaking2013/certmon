@@ -59,6 +59,8 @@ public class certmon {
 		
 		tools.add(Items.getMenuItem("List Cert"));
 		
+		help.add(Items.getMenuItem("About"));
+		
 		fileField = new JTextField(40);
 		fileField.setText(Holder.getDefaultFileName());
 		

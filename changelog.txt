@@ -1,5 +1,9 @@
 New features to add
+- blacklisted cert stores
+C:\Users\xxx\AppData\LocalLow\Sun\Java\Deployment\security\blacklisted.certs
 
+13Mar2015
+- Added many major parts of the application
 
 11Mar2015
 - Initial upload of files

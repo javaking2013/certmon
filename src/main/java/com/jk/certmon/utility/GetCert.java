@@ -1,8 +1,6 @@
 package com.jk.certmon.utility;
 
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.KeyStore;
@@ -14,9 +12,6 @@ import java.security.cert.TrustAnchor;
 import java.security.cert.X509Certificate;
 import java.util.Iterator;
 
-import javax.swing.DefaultListModel;
-
-import com.jk.certmon.display.Holder;
 import com.jk.certmon.display.certmon;
 
 public class GetCert {
@@ -24,7 +19,6 @@ public class GetCert {
 	private static String filename;
 	private static String password;
 	private static KeyStore keystore;
-	private static DefaultListModel<String> listModel;
 	private static PKIXParameters params;
 	private static Iterator it;
 	
@@ -38,18 +32,16 @@ public class GetCert {
             keystore = KeyStore.getInstance(KeyStore.getDefaultType());
             password = "changeit";
             keystore.load(is, password.toCharArray());
-
+            
             // This class retrieves the most-trusted CAs from the keystore
             params = new PKIXParameters(keystore);
-
+            
             // Get the set of trust anchors, which contain the most-trusted CA certificates
             it = params.getTrustAnchors().iterator();
             while( it.hasNext() ) {
                 TrustAnchor ta = (TrustAnchor)it.next();
-                // Get certificate
                 X509Certificate cert = ta.getTrustedCert();
-                listModel.addElement(keystore.getCertificateAlias(cert));
-                //System.out.println(cert);
+                certmon.listModel.addElement(keystore.getCertificateAlias(cert));
             }
             is.close();
         } catch (CertificateException e) {
@@ -60,12 +52,8 @@ public class GetCert {
         } 
 	}
 	
-	public static DefaultListModel<String> getCertList(){
-		listModel = new DefaultListModel<String>();
-		
+	public static void getCertList(){
 		getCertificate();
-		
-		return listModel;
 	}
 	
 	public static String getCertString(String alias){

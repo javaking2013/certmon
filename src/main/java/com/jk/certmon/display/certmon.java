@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
 
+import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -32,6 +33,7 @@ public class certmon {
 	public static JMenuBar menuBar;
 	public static JMenu file, tools, help;
 	public static JTextField fileField;
+	public static DefaultListModel listModel;
 	
 	public certmon(){
 		showit();
@@ -41,7 +43,6 @@ public class certmon {
 	public static void showit(){
 		f = new JFrame("CertMon");
 		JPanel centerPanel = new JPanel();
-		//JPanel rightPanel = new JPanel();
 		JPanel upperPanel = new JPanel();
 		
 		menuBar = new JMenuBar();
@@ -57,14 +58,16 @@ public class certmon {
 		file.add(Items.getMenuItem("Choose File"));
 		file.add(Items.getMenuItem("Exit"));
 		
-		tools.add(Items.getMenuItem("List Cert"));
+		//tools.add(Items.getMenuItem("List Cert"));
 		
 		help.add(Items.getMenuItem("About"));
 		
 		fileField = new JTextField(40);
 		fileField.setText(Holder.getDefaultFileName());
 		
-		list = new JList(GetCert.getCertList());
+		listModel = new DefaultListModel();
+		GetCert.getCertList();
+		list = new JList(listModel);
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		
 		certsListPane = new JScrollPane(list);
@@ -73,11 +76,7 @@ public class certmon {
 		certDetailsArea = new JTextArea(20,10);
 		certDetailsArea.setEditable(false);
 		certDetailsPane = new JScrollPane(certDetailsArea);
-		//certDetailsPane.add(certDetailsArea);
 		certDetailsPane.setPreferredSize(new Dimension(250,80));
-		
-		//centerPanel.add(Items.getButton("List Cert"));
-		//rightPanel.add(certDetailsArea);
 		
 		upperPanel.add(new JLabel("Filename: "));
 		upperPanel.add(fileField);
@@ -87,18 +86,14 @@ public class certmon {
 		certDetailsArea.setFont(font);
 		
 		f.add(certsListPane,BorderLayout.LINE_START);
-		//f.add(centerPanel,BorderLayout.CENTER);
 		f.add(certDetailsPane,BorderLayout.CENTER);
 		f.add(upperPanel,BorderLayout.PAGE_START);
 		f.setJMenuBar(menuBar);
-		//f.add(toolbar, BorderLayout.PAGE_START);
 		f.setTitle(Holder.getTitle());
-		//f.add(p);
 		f.setResizable(true);
 		f.setSize(800,500);
 		f.setVisible(true);
 		f.setLocationRelativeTo(null);
-		//f.setIconImage(img.getImage());
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 	

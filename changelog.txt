@@ -1,6 +1,7 @@
 New features to add
 - blacklisted cert stores
 C:\Users\xxx\AppData\LocalLow\Sun\Java\Deployment\security\blacklisted.certs
+- change keystore password
 
 13Mar2015
 - Added many major parts of the application

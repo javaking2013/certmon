@@ -20,7 +20,7 @@ public class GetCert {
 	private static String password;
 	private static KeyStore keystore;
 	private static PKIXParameters params;
-	private static Iterator it;
+	private static Iterator<TrustAnchor> it;
 	
 	public static void setFileName(String inFileName){filename = inFileName;}
 

@@ -28,12 +28,12 @@ public class certmon {
 	
 	public static JFrame f;
 	public static JScrollPane certsListPane, certDetailsPane;
-	public static JList list;
+	public static JList<String> list;
 	public static JTextArea certDetailsArea;
 	public static JMenuBar menuBar;
 	public static JMenu file, tools, help;
 	public static JTextField fileField;
-	public static DefaultListModel listModel;
+	public static DefaultListModel<String> listModel;
 	
 	public certmon(){
 		showit();
@@ -42,7 +42,6 @@ public class certmon {
 	
 	public static void showit(){
 		f = new JFrame("CertMon");
-		JPanel centerPanel = new JPanel();
 		JPanel upperPanel = new JPanel();
 		
 		menuBar = new JMenuBar();
@@ -65,9 +64,9 @@ public class certmon {
 		fileField = new JTextField(40);
 		fileField.setText(Holder.getDefaultFileName());
 		
-		listModel = new DefaultListModel();
+		listModel = new DefaultListModel<String>();
 		GetCert.getCertList();
-		list = new JList(listModel);
+		list = new JList<String>(listModel);
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		
 		certsListPane = new JScrollPane(list);

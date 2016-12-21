@@ -2,6 +2,7 @@ package com.jk.certmon.utility;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.StringWriter;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
@@ -13,6 +14,9 @@ import java.security.cert.X509Certificate;
 import java.util.Iterator;
 
 import com.jk.certmon.display.certmon;
+
+import javax.security.cert.CertificateEncodingException;
+import javax.xml.bind.DatatypeConverter;
 
 public class GetCert {
 	
@@ -76,7 +80,7 @@ public class GetCert {
                 TrustAnchor ta = (TrustAnchor)it.next();
                 X509Certificate cert = ta.getTrustedCert();
                 if(keystore.getCertificateAlias(cert).equals(alias)){
-                	return cert.toString();
+                    return cert.toString();
                 }
             }
             is.close();
@@ -89,4 +93,49 @@ public class GetCert {
 		
 		return "";
 	}
+
+	public static String getCertValue(String alias){
+        try {
+            // Load the JDK's cacerts keystore file
+            filename = certmon.fileField.getText();
+
+            FileInputStream is = new FileInputStream(filename);
+            keystore = KeyStore.getInstance(KeyStore.getDefaultType());
+            password = "changeit";
+            keystore.load(is, password.toCharArray());
+
+            // This class retrieves the most-trusted CAs from the keystore
+            params = new PKIXParameters(keystore);
+
+            // Get the set of trust anchors, which contain the most-trusted CA certificates
+            it = params.getTrustAnchors().iterator();
+            while( it.hasNext() ) {
+                TrustAnchor ta = (TrustAnchor)it.next();
+                X509Certificate cert = ta.getTrustedCert();
+                if(keystore.getCertificateAlias(cert).equals(alias)){
+
+
+                    StringWriter sw = new StringWriter();
+                    try {
+                        sw.write("-----BEGIN CERTIFICATE-----\n");
+                        sw.write(DatatypeConverter.printBase64Binary(cert.getEncoded()).replaceAll("(.{64})", "$1\n"));
+                        sw.write("\n-----END CERTIFICATE-----\n");
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    return sw.toString();
+                }
+            }
+            is.close();
+        } catch (CertificateException e) {
+        } catch (KeyStoreException e) {
+        } catch (NoSuchAlgorithmException e) {
+        } catch (InvalidAlgorithmParameterException e) {
+        } catch (IOException e) {
+        }
+
+        return "";
+    }
 }

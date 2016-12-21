@@ -53,7 +53,9 @@ public class certmon {
 		menuBar.add(file);
 		menuBar.add(tools);
 		menuBar.add(help);
-		
+
+		tools.add(Items.getMenuItem("Get Cert Value"));
+
 		file.add(Items.getMenuItem("Choose File"));
 		file.add(Items.getMenuItem("Exit"));
 		
@@ -101,6 +103,7 @@ public class certmon {
 			public void valueChanged(ListSelectionEvent listSelectionEvent){
 				certmon.certDetailsArea.setText(GetCert.getCertString((String)certmon.list.getSelectedValue()));
 				certmon.certDetailsArea.setCaretPosition(0);
+				Holder.setCurrentCert(list.getSelectedValue());
 			}
 		});
 	}

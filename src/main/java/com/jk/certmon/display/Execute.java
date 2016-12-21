@@ -1,7 +1,8 @@
 package com.jk.certmon.display;
 
 import java.io.File;
-import javax.swing.JFileChooser;
+import javax.swing.*;
+
 import com.jk.certmon.utility.GetCert;
 
 public class Execute {
@@ -22,6 +23,10 @@ public class Execute {
 			
 		}else if(value.equals("About")){
 			
+		}else if(value.equals("Get Cert Value")){
+			JOptionPane.showMessageDialog(null, GetCert.getCertValue(Holder.getCurrentCert()));
+		}else{
+			JOptionPane.showMessageDialog(null, "This doesn't work yet: " + value);
 		}
 	}
 }

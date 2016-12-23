@@ -3,10 +3,9 @@ package com.jk.certmon.display;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.io.File;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 
 import com.jk.certmon.utility.Constants;
 import com.jk.certmon.utility.GetCert;
@@ -31,8 +30,8 @@ public class certmon {
 		btnAction();
 	}
 	
-	public static void showit(){
-		f = new JFrame("CertMon");
+	private static void showit(){
+		f = new JFrame("CertMon " + Constants.VERSION);
 		JPanel upperPanel = new JPanel();
 		
 		menuBar = new JMenuBar();
@@ -55,11 +54,11 @@ public class certmon {
 		help.add(Items.getMenuItem("About"));
 		
 		fileField = new JTextField(40);
-		fileField.setText(Holder.getDefaultFileName());
+		fileField.setText(System.getProperty("java.home") + "/lib/security/cacerts".replace('/', File.separatorChar));
 		
-		listModel = new DefaultListModel<String>();
+		listModel = new DefaultListModel<>();
 		GetCert.getCertList();
-		list = new JList<String>(listModel);
+		list = new JList<>(listModel);
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		
 		certsListPane = new JScrollPane(list);
@@ -89,16 +88,14 @@ public class certmon {
 		f.setSize(800,500);
 		f.setVisible(true);
 		f.setLocationRelativeTo(null);
-		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		f.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 	}
 	
-	public static void btnAction(){
-		list.addListSelectionListener(new ListSelectionListener(){
-			public void valueChanged(ListSelectionEvent listSelectionEvent){
-				certmon.certDetailsArea.setText(GetCert.getCertString((String)certmon.list.getSelectedValue()));
-				certmon.certDetailsArea.setCaretPosition(0);
-				Constants.CURRENT_CERT = list.getSelectedValue();
-			}
+	private static void btnAction(){
+		list.addListSelectionListener((ListSelectionEvent) -> {
+			certmon.certDetailsArea.setText(GetCert.getCertString(certmon.list.getSelectedValue()));
+			certmon.certDetailsArea.setCaretPosition(0);
+			Constants.CURRENT_CERT = list.getSelectedValue();
 		});
 	}
 }

@@ -15,7 +15,6 @@ import java.util.Iterator;
 
 import com.jk.certmon.display.certmon;
 
-import javax.security.cert.CertificateEncodingException;
 import javax.xml.bind.DatatypeConverter;
 
 public class GetCert {
@@ -43,7 +42,7 @@ public class GetCert {
             // Get the set of trust anchors, which contain the most-trusted CA certificates
             it = params.getTrustAnchors().iterator();
             while( it.hasNext() ) {
-                TrustAnchor ta = (TrustAnchor)it.next();
+                TrustAnchor ta = it.next();
                 X509Certificate cert = ta.getTrustedCert();
                 certmon.listModel.addElement(keystore.getCertificateAlias(cert));
             }
@@ -77,7 +76,7 @@ public class GetCert {
             // Get the set of trust anchors, which contain the most-trusted CA certificates
             it = params.getTrustAnchors().iterator();
             while( it.hasNext() ) {
-                TrustAnchor ta = (TrustAnchor)it.next();
+                TrustAnchor ta = it.next();
                 X509Certificate cert = ta.getTrustedCert();
                 if(keystore.getCertificateAlias(cert).equals(alias)){
                     return cert.toString();
@@ -110,7 +109,7 @@ public class GetCert {
             // Get the set of trust anchors, which contain the most-trusted CA certificates
             it = params.getTrustAnchors().iterator();
             while( it.hasNext() ) {
-                TrustAnchor ta = (TrustAnchor)it.next();
+                TrustAnchor ta = it.next();
                 X509Certificate cert = ta.getTrustedCert();
                 if(keystore.getCertificateAlias(cert).equals(alias)){
 

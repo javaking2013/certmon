@@ -4,20 +4,11 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
 
-import javax.swing.DefaultListModel;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import javax.swing.ListSelectionModel;
+import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import com.jk.certmon.utility.Constants;
 import com.jk.certmon.utility.GetCert;
 
 public class certmon {
@@ -76,9 +67,12 @@ public class certmon {
 
 		certDetailsArea = new JTextArea(20,10);
 		certDetailsArea.setEditable(false);
+		certDetailsArea.setWrapStyleWord(true);
+		certDetailsArea.setLineWrap(true);
 		certDetailsPane = new JScrollPane(certDetailsArea);
 		certDetailsPane.setPreferredSize(new Dimension(250,80));
-		
+		certDetailsPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+
 		upperPanel.add(new JLabel("Filename: "));
 		upperPanel.add(fileField);
 		upperPanel.add(Items.getButton("Choose File"));
@@ -90,7 +84,7 @@ public class certmon {
 		f.add(certDetailsPane,BorderLayout.CENTER);
 		f.add(upperPanel,BorderLayout.PAGE_START);
 		f.setJMenuBar(menuBar);
-		f.setTitle(Holder.getTitle());
+		f.setTitle(Constants.TITLE);
 		f.setResizable(true);
 		f.setSize(800,500);
 		f.setVisible(true);
@@ -103,7 +97,7 @@ public class certmon {
 			public void valueChanged(ListSelectionEvent listSelectionEvent){
 				certmon.certDetailsArea.setText(GetCert.getCertString((String)certmon.list.getSelectedValue()));
 				certmon.certDetailsArea.setCaretPosition(0);
-				Holder.setCurrentCert(list.getSelectedValue());
+				Constants.CURRENT_CERT = list.getSelectedValue();
 			}
 		});
 	}

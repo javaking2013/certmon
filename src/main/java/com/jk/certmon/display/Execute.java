@@ -19,7 +19,7 @@ class Execute {
 				JOptionPane.showMessageDialog(null, "This feature is not implemented yet.");
 				break;
 			case "Get Cert Value":
-				JOptionPane.showMessageDialog(null, GetCert.getCertValue(Constants.CURRENT_CERT));
+				certmon.certDetailsArea.setText(GetCert.getCertValue(Constants.CURRENT_CERT));
 				break;
 			default: JOptionPane.showMessageDialog(null, "This feature is not implemented yet.");
 		}

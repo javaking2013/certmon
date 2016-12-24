@@ -22,7 +22,7 @@ public class certmon {
 	public static JTextArea certDetailsArea;
 	public static JMenuBar menuBar;
 	public static JMenu file, tools, help;
-	public static JTextField fileField;
+	public static JTextField fileField, pwField;
 	public static DefaultListModel<String> listModel;
 	
 	public certmon(){
@@ -55,6 +55,8 @@ public class certmon {
 		
 		fileField = new JTextField(40);
 		fileField.setText(System.getProperty("java.home") + "/lib/security/cacerts".replace('/', File.separatorChar));
+		pwField = new JTextField(10);
+		pwField.setText(Constants.CERT_PASSWORD);
 		
 		listModel = new DefaultListModel<>();
 		GetCert.getCertList();
@@ -75,6 +77,8 @@ public class certmon {
 		upperPanel.add(new JLabel("Filename: "));
 		upperPanel.add(fileField);
 		upperPanel.add(Items.getButton("Choose File"));
+		upperPanel.add(new JLabel("Password:"));
+		upperPanel.add(pwField);
 		
 		Font font = new Font("Courier New", Font.PLAIN, 12);
 		certDetailsArea.setFont(font);
@@ -85,7 +89,7 @@ public class certmon {
 		f.setJMenuBar(menuBar);
 		f.setTitle(Constants.TITLE);
 		f.setResizable(true);
-		f.setSize(800,500);
+		f.setSize(900,500);
 		f.setVisible(true);
 		f.setLocationRelativeTo(null);
 		f.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);

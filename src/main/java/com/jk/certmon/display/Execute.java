@@ -21,6 +21,9 @@ class Execute {
 			case "Get Cert Value":
 				certmon.certDetailsArea.setText(GetCert.getCertValue(Constants.CURRENT_CERT));
 				break;
+			case "Get Remote Certificate":
+				certmon.certDetailsArea.setText(GetCert.getRemoteCertificate(certmon.fileField.getText()));
+				break;
 			default: JOptionPane.showMessageDialog(null, "This feature is not implemented yet.");
 		}
 	}

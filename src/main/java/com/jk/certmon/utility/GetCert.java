@@ -12,6 +12,8 @@ import com.jk.certmon.display.certmon;
 import sun.misc.BASE64Encoder;
 import sun.security.provider.X509Factory;
 
+import javax.net.ssl.*;
+
 public class GetCert {
 	
 	private static String filename;
@@ -66,5 +68,28 @@ public class GetCert {
             e.printStackTrace();
         }
         return "Something went wrong";
+    }
+
+    public static String getRemoteCertificate(String url){
+	    try {
+            SSLContext sc = SSLContext.getInstance("SSL");
+            sc.init(null, null, null);
+            SSLSocketFactory factory = sc.getSocketFactory();
+            SSLSocket socket = (SSLSocket) factory.createSocket(url, 443);
+            socket.startHandshake();
+            SSLSession session = socket.getSession();
+            Certificate[] servercerts = session.getPeerCertificates();
+            //System.out.println(servercerts[0].toString());
+            /*for (int i = 0; i < servercerts.length; i++) {
+                System.out.print("-----BEGIN CERTIFICATE-----\n");
+                System.out.print(new sun.misc.BASE64Encoder().encode(servercerts[i].getEncoded()));
+                System.out.print("\n-----END CERTIFICATE-----\n");
+            }*/
+            socket.close();
+            return servercerts[0].toString();
+        }catch(Exception e){
+	        e.printStackTrace();
+        }
+	    return "";
     }
 }

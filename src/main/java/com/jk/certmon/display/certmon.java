@@ -45,6 +45,7 @@ public class certmon {
 		menuBar.add(help);
 
 		tools.add(Items.getMenuItem("Get Cert Value"));
+		tools.add(Items.getMenuItem("Get Remote Certificate"));
 
 		file.add(Items.getMenuItem("Choose File"));
 		file.add(Items.getMenuItem("Exit"));

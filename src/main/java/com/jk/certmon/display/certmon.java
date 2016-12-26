@@ -44,10 +44,11 @@ public class certmon {
 		menuBar.add(tools);
 		menuBar.add(help);
 
-		tools.add(Items.getMenuItem("Get Cert Value"));
 		tools.add(Items.getMenuItem("Get Remote Certificate"));
 
+		file.add(Items.getMenuItem("Populate Default Keystore"));
 		file.add(Items.getMenuItem("Choose File"));
+		file.addSeparator();
 		file.add(Items.getMenuItem("Exit"));
 		
 		//tools.add(Items.getMenuItem("List Cert"));
@@ -55,7 +56,7 @@ public class certmon {
 		help.add(Items.getMenuItem("About"));
 		
 		fileField = new JTextField(40);
-		fileField.setText(System.getProperty("java.home") + "/lib/security/cacerts".replace('/', File.separatorChar));
+		fileField.setText(Constants.getDefaultKeystore());
 		pwField = new JTextField(10);
 		pwField.setText(Constants.CERT_PASSWORD);
 		
@@ -75,7 +76,7 @@ public class certmon {
 		certDetailsPane.setPreferredSize(new Dimension(250,80));
 		certDetailsPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
-		upperPanel.add(new JLabel("Filename: "));
+		upperPanel.add(new JLabel("Input: "));
 		upperPanel.add(fileField);
 		upperPanel.add(Items.getButton("Choose File"));
 		upperPanel.add(new JLabel("Password:"));

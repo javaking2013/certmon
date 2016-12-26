@@ -18,11 +18,14 @@ class Execute {
 			case "About":
 				JOptionPane.showMessageDialog(null, "This feature is not implemented yet.");
 				break;
-			case "Get Cert Value":
-				certmon.certDetailsArea.setText(GetCert.getCertValue(Constants.CURRENT_CERT));
-				break;
 			case "Get Remote Certificate":
 				certmon.certDetailsArea.setText(GetCert.getRemoteCertificate(certmon.fileField.getText()));
+				certmon.certDetailsArea.setCaretPosition(0);
+				break;
+			case "Populate Default Keystore":
+				certmon.fileField.setText(Constants.getDefaultKeystore());
+				certmon.listModel.removeAllElements();
+				GetCert.getCertList();
 				break;
 			default: JOptionPane.showMessageDialog(null, "This feature is not implemented yet.");
 		}

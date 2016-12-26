@@ -37,7 +37,7 @@ public class GetCert {
                 certmon.listModel.addElement(keystore.getCertificateAlias(cert));
             }
         } catch (Exception e) {
-		    e.printStackTrace();
+		    certmon.certDetailsArea.setText(e.toString());
         } 
 	}
 	
@@ -50,12 +50,10 @@ public class GetCert {
 		try {
             keystore = KeyStore.getInstance(KeyStore.getDefaultType());
             keystore.load(new FileInputStream(certmon.fileField.getText()), certmon.pwField.getText().toCharArray());
-            return keystore.getCertificate(alias).toString();
+            return keystore.getCertificate(alias).toString() + "\n\n" + getCertValue(alias);
         } catch (Exception e) {
-		    e.printStackTrace();
+            return e.toString();
         } 
-		
-		return "";
 	}
 
 	public static String getCertValue(String alias){
@@ -65,9 +63,8 @@ public class GetCert {
             String certValue = new BASE64Encoder().encodeBuffer(keystore.getCertificate(alias).getEncoded());
             return X509Factory.BEGIN_CERT + "\n" + certValue + X509Factory.END_CERT;
         } catch (Exception e) {
-            e.printStackTrace();
+            return e.toString();
         }
-        return "Something went wrong";
     }
 
     public static String getRemoteCertificate(String url){
@@ -79,17 +76,11 @@ public class GetCert {
             socket.startHandshake();
             SSLSession session = socket.getSession();
             Certificate[] servercerts = session.getPeerCertificates();
-            //System.out.println(servercerts[0].toString());
-            /*for (int i = 0; i < servercerts.length; i++) {
-                System.out.print("-----BEGIN CERTIFICATE-----\n");
-                System.out.print(new sun.misc.BASE64Encoder().encode(servercerts[i].getEncoded()));
-                System.out.print("\n-----END CERTIFICATE-----\n");
-            }*/
             socket.close();
-            return servercerts[0].toString();
+
+            return servercerts[0].toString() + "\n\n" + X509Factory.BEGIN_CERT + "\n" + new BASE64Encoder().encodeBuffer(servercerts[0].getEncoded()) + X509Factory.END_CERT;
         }catch(Exception e){
-	        e.printStackTrace();
+	       return e.toString();
         }
-	    return "";
     }
 }

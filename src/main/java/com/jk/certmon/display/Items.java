@@ -5,9 +5,7 @@ import javax.swing.JMenuItem;
 
 public class Items {
 	
-	public Items(){
-		
-	}
+	public Items(){ } // no-args constructor
 	
 	static JMenuItem getMenuItem(final String value){
 		JMenuItem item = new JMenuItem(value);

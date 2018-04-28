@@ -5,6 +5,7 @@ import javax.swing.*;
 
 import com.jk.certmon.utility.Constants;
 import com.jk.certmon.utility.GetCert;
+import com.jk.certmon.utility.ImportCert;
 
 class Execute {
 
@@ -26,6 +27,9 @@ class Execute {
 				certmon.fileField.setText(Constants.getDefaultKeystore());
 				certmon.listModel.removeAllElements();
 				GetCert.getCertList();
+				break;
+			case "Import Certificate":
+				ImportCert.doit();
 				break;
 			default: JOptionPane.showMessageDialog(null, "This feature is not implemented yet.");
 		}

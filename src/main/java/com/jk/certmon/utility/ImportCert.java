@@ -33,7 +33,7 @@ public class ImportCert {
             char[] password = certmon.pwField.getText().toCharArray();
             String alias = JOptionPane.showInputDialog("Alias of new cert:");
 
-            String certfile = JOptionPane.showInputDialog("Path and filename of certificate:"); /*your cert path*/
+            String certfile = JOptionPane.showInputDialog("Path and filename of certificate:");
             FileInputStream is = new FileInputStream(certmon.fileField.getText());
 
             KeyStore keystore = KeyStore.getInstance(KeyStore.getDefaultType());

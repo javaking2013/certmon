@@ -7,10 +7,8 @@ import java.security.cert.PKIXParameters;
 import java.security.cert.TrustAnchor;
 import java.security.cert.X509Certificate;
 import java.util.Iterator;
-
 import com.jk.certmon.display.certmon;
-import sun.misc.BASE64Encoder;
-import sun.security.provider.X509Factory;
+import java.util.Base64;
 
 import javax.net.ssl.*;
 
@@ -60,8 +58,8 @@ public class GetCert {
         try {
             keystore = KeyStore.getInstance(KeyStore.getDefaultType());
             keystore.load(new FileInputStream(certmon.fileField.getText()), certmon.pwField.getText().toCharArray());
-            String certValue = new BASE64Encoder().encodeBuffer(keystore.getCertificate(alias).getEncoded());
-            return X509Factory.BEGIN_CERT + "\n" + certValue + X509Factory.END_CERT;
+            String certValue = Base64.getEncoder().encodeToString(keystore.getCertificate(alias).getEncoded());
+            return Constants.BEGIN_CERT + "\n" + certValue + Constants.END_CERT;
         } catch (Exception e) {
             return e.toString();
         }
@@ -78,7 +76,7 @@ public class GetCert {
             Certificate[] servercerts = session.getPeerCertificates();
             socket.close();
 
-            return servercerts[0].toString() + "\n\n" + X509Factory.BEGIN_CERT + "\n" + new BASE64Encoder().encodeBuffer(servercerts[0].getEncoded()) + X509Factory.END_CERT;
+            return servercerts[0].toString() + "\n\n" + Constants.BEGIN_CERT + "\n" + Base64.getEncoder().encodeToString(servercerts[0].getEncoded()) + Constants.END_CERT;
         }catch(Exception e){
 	       return e.toString();
         }

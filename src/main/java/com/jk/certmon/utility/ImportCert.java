@@ -23,17 +23,19 @@ public class ImportCert {
         String certText;
 
         try {
-            //Clipboard c = Toolkit.getDefaultToolkit().getSystemClipboard();
             clipboardData = (String) Toolkit.getDefaultToolkit().getSystemClipboard().getData(DataFlavor.stringFlavor);
-            if(clipboardData.contains("-----BEGIN CERTIFICATE-----")){
+            if(clipboardData.contains(Constants.BEGIN_CERT)){
                 //JOptionPane.showMessageDialog(null, "Positive");
                 certText = clipboardData;
             }
 
             char[] password = certmon.pwField.getText().toCharArray();
             String alias = JOptionPane.showInputDialog("Alias of new cert:");
+            if(alias == null){ return; }
 
             String certfile = JOptionPane.showInputDialog("Path and filename of certificate:");
+            if(certfile == null){ return; }
+
             FileInputStream is = new FileInputStream(certmon.fileField.getText());
 
             KeyStore keystore = KeyStore.getInstance(KeyStore.getDefaultType());

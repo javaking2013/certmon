@@ -3,16 +3,17 @@ package com.jk.certmon.display;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.io.File;
-
 import javax.swing.*;
-
 import com.jk.certmon.utility.Constants;
 import com.jk.certmon.utility.GetCert;
+import com.jk.certmon.utility.Settings;
+
+import static com.jk.certmon.utility.Settings.loadSettings;
 
 public class certmon {
 	
 	public static void main(String[] args) {
+		loadSettings();
 		new certmon();
 	}
 	
@@ -47,15 +48,20 @@ public class certmon {
 		tools.add(Items.getMenuItem("Get Remote Certificate"));
 		tools.add(Items.getMenuItem("Import Certificate"));
 		tools.add(Items.getMenuItem("Remove Certificate"));
+		tools.add(Items.getMenuItem("Analyze Certs"));
 
 		file.add(Items.getMenuItem("Populate Default Keystore"));
 		file.add(Items.getMenuItem("Choose File"));
 		file.addSeparator();
 		file.add(Items.getMenuItem("Exit"));
 		
-		//tools.add(Items.getMenuItem("List Cert"));
-		
 		help.add(Items.getMenuItem("About"));
+		help.add(Items.getMenuItem("Show Change Log"));
+
+		//JMenu settingsSubmMenu = new JMenu("Settings");
+		//settingsSubmMenu.add(Items.getMenuItem("Show Settings"));
+		//settingsSubmMenu.add(Items.getMenuItem("Turn Debug On/Off"));
+		help.add(Settings.getSettingsSubmenu());
 		
 		fileField = new JTextField(40);
 		fileField.setText(Constants.getDefaultKeystore());

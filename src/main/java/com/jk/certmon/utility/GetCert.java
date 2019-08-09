@@ -1,11 +1,14 @@
 package com.jk.certmon.utility;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.security.KeyManagementException;
 import java.security.KeyStore;
-import java.security.cert.Certificate;
-import java.security.cert.PKIXParameters;
-import java.security.cert.TrustAnchor;
-import java.security.cert.X509Certificate;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.*;
+import java.util.Date;
 import java.util.Iterator;
 import com.jk.certmon.display.certmon;
 import java.util.Base64;
@@ -19,7 +22,7 @@ public class GetCert {
 	private static PKIXParameters params;
 	private static Iterator<TrustAnchor> it;
 	
-	public static void setFileName(String inFileName){filename = inFileName;}
+	public static void setFileName(String inFileName){ filename = inFileName; }
 
 	private static void getCertificate(){
 		try {
@@ -34,10 +37,28 @@ public class GetCert {
                 X509Certificate cert = ta.getTrustedCert();
                 certmon.listModel.addElement(keystore.getCertificateAlias(cert));
             }
-        } catch (Exception e) {
-		    certmon.certDetailsArea.setText(e.toString());
-        } 
+            if(certmon.list != null){
+                certmon.list.setSelectedIndex(0);
+            }
+        } catch (Exception e) { Logger.logit(e); }
 	}
+
+	public static void analyzeCerts(){
+	    String result = "Here are the results of the expiration date audit:\n\n";
+	    try{
+	        KeyStore store = KeyStore.getInstance(KeyStore.getDefaultType());
+	        store.load(new FileInputStream(certmon.fileField.getText()), certmon.pwField.getText().toCharArray());
+	        PKIXParameters params = new PKIXParameters(keystore);
+            for(TrustAnchor ta : params.getTrustAnchors()) {
+                X509Certificate cert = ta.getTrustedCert();
+                Date expDate = cert.getNotAfter();
+                if (expDate.before(new Date())) {
+                    result += keystore.getCertificateAlias(cert) + " has expired on " + expDate + "\n";
+                }
+            }
+	        certmon.certDetailsArea.setText(result);
+        }catch(Exception e){ Logger.logit(e); }
+    }
 	
 	public static void getCertList(){
 		getCertificate();
@@ -49,9 +70,15 @@ public class GetCert {
             keystore = KeyStore.getInstance(KeyStore.getDefaultType());
             keystore.load(new FileInputStream(certmon.fileField.getText()), certmon.pwField.getText().toCharArray());
             return keystore.getCertificate(alias).toString() + "\n\n" + getCertValue(alias);
-        } catch (Exception e) {
-            return e.toString();
-        } 
+        } catch (NullPointerException e) {
+		    return "Certificate does not exist";
+        } catch(KeyStoreException kse){
+		    return "Something happened with the keystore: " + kse.toString();
+        } catch(IOException fileException){
+		    return "File does not exist or cannot be opened: " + fileException.toString();
+        } catch(NoSuchAlgorithmException | CertificateException ioe){
+		    return "Something happened with the certificate: " + ioe.toString();
+        }
 	}
 
 	public static String getCertValue(String alias){
@@ -60,8 +87,14 @@ public class GetCert {
             keystore.load(new FileInputStream(certmon.fileField.getText()), certmon.pwField.getText().toCharArray());
             String certValue = Base64.getEncoder().encodeToString(keystore.getCertificate(alias).getEncoded());
             return Constants.BEGIN_CERT + "\n" + certValue + Constants.END_CERT;
-        } catch (Exception e) {
-            return e.toString();
+        } catch (NullPointerException e) {
+            return "Certificate does not exist";
+        } catch(KeyStoreException kse){
+            return "Something happened with the keystore: " + kse.toString();
+        } catch(IOException fileException){
+            return "File does not exist or cannot be opened: " + fileException.toString();
+        } catch(NoSuchAlgorithmException | CertificateException ioe){
+            return "Something happened with the certificate: " + ioe.toString();
         }
     }
 
@@ -77,8 +110,12 @@ public class GetCert {
             socket.close();
 
             return servercerts[0].toString() + "\n\n" + Constants.BEGIN_CERT + "\n" + Base64.getEncoder().encodeToString(servercerts[0].getEncoded()) + Constants.END_CERT;
-        }catch(Exception e){
-	       return e.toString();
+        }catch(IOException e){
+            return "Something happened connecting to " + url + ":: " + e.toString();
+        } catch(NoSuchAlgorithmException | KeyManagementException kme){
+	        return "Something happened with the key: " + kme.toString();
+        }catch(CertificateEncodingException cee){
+	        return "Something happened with the certificate encoding: " + cee;
         }
     }
 }

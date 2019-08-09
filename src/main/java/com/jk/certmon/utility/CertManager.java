@@ -55,9 +55,7 @@ public class CertManager {
             FileOutputStream out = new FileOutputStream(keystoreFile);
             keystore.store(out, password);
             out.close();
-        }catch(Exception e){
-            e.printStackTrace();
-        }
+        }catch(Exception e){ Logger.logit(e); }
     }
 
     public static void removeCert(){
@@ -76,7 +74,7 @@ public class CertManager {
                 JOptionPane.showMessageDialog(null, "Deleted " + alias);
                 Execute.populateDefaultKeystore();
             }
-        }catch(Exception e){ e.printStackTrace(); }
+        }catch(Exception e){ Logger.logit(e); }
     }
 
     private static InputStream fullStream( String fname ) throws IOException {

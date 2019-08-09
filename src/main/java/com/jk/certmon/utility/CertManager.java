@@ -15,9 +15,9 @@ import java.io.DataInputStream;
 import java.io.ByteArrayInputStream;
 import java.security.cert.CertificateFactory;
 
-public class ImportCert {
+public class CertManager {
 
-    public static void doit(){
+    public static void importCert(){
 
         String clipboardData;
         String certText;
@@ -58,6 +58,25 @@ public class ImportCert {
         }catch(Exception e){
             e.printStackTrace();
         }
+    }
+
+    public static void removeCert(){
+        String alias = certmon.list.getSelectedValue();
+        try {
+            char[] password = certmon.pwField.getText().toCharArray();
+            FileInputStream is = new FileInputStream(certmon.fileField.getText());
+            KeyStore keystore = KeyStore.getInstance(KeyStore.getDefaultType());
+            keystore.load(is, password);
+            if(JOptionPane.showConfirmDialog(null, "Are you sure you want to delete " + alias) == JOptionPane.YES_OPTION){
+                keystore.deleteEntry(alias);
+                File keystoreFile = new File(certmon.fileField.getText());
+                FileOutputStream out = new FileOutputStream(keystoreFile);
+                keystore.store(out, password);
+                out.close();
+                JOptionPane.showMessageDialog(null, "Deleted " + alias);
+                Execute.populateDefaultKeystore();
+            }
+        }catch(Exception e){ e.printStackTrace(); }
     }
 
     private static InputStream fullStream( String fname ) throws IOException {

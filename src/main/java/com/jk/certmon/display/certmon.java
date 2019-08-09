@@ -46,6 +46,7 @@ public class certmon {
 
 		tools.add(Items.getMenuItem("Get Remote Certificate"));
 		tools.add(Items.getMenuItem("Import Certificate"));
+		tools.add(Items.getMenuItem("Remove Certificate"));
 
 		file.add(Items.getMenuItem("Populate Default Keystore"));
 		file.add(Items.getMenuItem("Choose File"));
